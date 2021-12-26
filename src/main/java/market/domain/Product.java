@@ -1,17 +1,42 @@
-package market.models;
+package market.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-
+@Entity
+@Table(name="products")
 public class Product {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="product_id")
 	private Long productId;
+	@Column(name="title")
 	private String title;
+	@Column(name="description", columnDefinition = "text")
 	private String description;
+	@Column(name="price")
 	private int price;
+	@Column(name="city")
 	private String city;
+	@Column(name="author")
 	private String author;
 	
 	
 	public Product() {
+		
+	}
+	
+	public Product(String title, String description, int price, String city, String author) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.price = price;
+		this.city = city;
+		this.author = author;
 	}
 
 
@@ -73,17 +98,14 @@ public class Product {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-
-
-	public Product(Long productId, String title, String description, int price, String city, String author) {
-		super();
-		this.productId = productId;
-		this.title = title;
-		this.description = description;
-		this.price = price;
-		this.city = city;
-		this.author = author;
+	
+	@Override
+	public String toString() {
+		return productId+" "+title+" "+description+" "+price+" "+city+" "+author;
 	}
+
+
+
 	
 	
 }

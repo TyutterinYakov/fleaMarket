@@ -5,9 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import market.models.Product;
-import market.services.ProductService;
+import market.business.ProductService;
+import market.domain.Product;
 
 
 @Controller
@@ -28,8 +29,8 @@ public class MarketController {
 
 
 	@GetMapping("/")
-	public String market(Model model) {
-		model.addAttribute("products", productService.listProducts());
+	public String market(@RequestParam(name="title", required = false) String title, Model model) {
+		model.addAttribute("products", productService.listProducts(title));
 		return "market";
 	}
 	@PostMapping("/product/create")
