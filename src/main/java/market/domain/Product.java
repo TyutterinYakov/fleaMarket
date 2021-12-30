@@ -1,10 +1,17 @@
 package market.domain;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -24,20 +31,21 @@ public class Product {
 	private String city;
 	@Column(name="author")
 	private String author;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="product")
+	private List<Image> images;
+	private Long previewImageId;
+	private LocalDateTime dateOfCreated;
+	
+	@PrePersist
+	private void init() {
+		dateOfCreated = LocalDateTime.now();
+	}
 	
 	
 	public Product() {
 		
 	}
 	
-	public Product(String title, String description, int price, String city, String author) {
-		super();
-		this.title = title;
-		this.description = description;
-		this.price = price;
-		this.city = city;
-		this.author = author;
-	}
 
 
 	public Long getProductId() {
@@ -104,7 +112,36 @@ public class Product {
 		return productId+" "+title+" "+description+" "+price+" "+city+" "+author;
 	}
 
+	public List<Image> getImages() {
+		return images;
+	}
 
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
+	
+
+
+
+	public Long getPreviewImageId() {
+		return previewImageId;
+	}
+
+
+	public void setPreviewImageId(Long previewImageId) {
+		this.previewImageId = previewImageId;
+	}
+
+
+	public LocalDateTime getDateOfCreated() {
+		return dateOfCreated;
+	}
+
+
+	public void setDateOfCreated(LocalDateTime dateOfCreated) {
+		this.dateOfCreated = dateOfCreated;
+	}
+	
 
 	
 	

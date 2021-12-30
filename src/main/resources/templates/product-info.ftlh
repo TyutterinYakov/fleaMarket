@@ -6,6 +6,12 @@
 <body>
 <h1>Market</h1><hr>
 <h4>Подробная информация</h4><br><br>
+
+<div>
+<#list images as img>
+            <img height="150px" width="150px" src="../productImages/${img.originalName}"/>
+</#list>
+</div>
 <b>Название товара: </b>${product.title}<br><br>
 <b>Описание товара: </b>${product.description}<br><br>
 <b>Цена товара: </b>${product.price}<br><br>
