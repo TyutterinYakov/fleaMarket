@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import market.dao.ImageRepository;
 import market.dao.ProductRepository;
+import market.dao.UserRepository;
 import market.domain.Image;
 import market.domain.Product;
+import market.domain.User;
 
 @Service
 public class ProductService {
@@ -28,6 +31,8 @@ public class ProductService {
 	private List<Image> images = new LinkedList<>();
 	@Autowired
 	private ProductRepository productDao;
+	@Autowired
+	private UserRepository userDao;
 	@Autowired
 	private ImageRepository imageDao;
 	
@@ -49,9 +54,9 @@ public class ProductService {
 		
 	}
 	@Transactional
-	public void saveProduct(Product pr, List<MultipartFile> files) throws IOException {
-		
-//		log.info("Saving new Author: {}; Title: {}", pr.getAuthor(), pr.getTitle());
+	public void saveProduct(Principal principal, Product pr, List<MultipartFile> files) throws IOException {
+		pr.setUser(getUserByPrincipal(principal));
+		log.info("Saving! Email: {}; Title: {}", pr.getUser().getEmail(), pr.getTitle());
 		Product prFromDb = productDao.saveAndFlush(pr);
 		String imgName;
 		Long id = pr.getProductId();
@@ -79,6 +84,10 @@ public class ProductService {
 		
 		
 	
+	public User getUserByPrincipal(Principal principal) {
+		if(principal==null) return new User();
+		return userDao.findByEmail(principal.getName());
+	}
 	@Transactional
 	public void removeProduct(Long id) {
 		log.info("remove Product by id: {}", id);

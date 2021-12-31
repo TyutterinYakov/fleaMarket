@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -29,12 +31,13 @@ public class Product {
 	private int price;
 	@Column(name="city")
 	private String city;
-	@Column(name="author")
-	private String author;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="product")
 	private List<Image> images;
 	private Long previewImageId;
 	private LocalDateTime dateOfCreated;
+	@ManyToOne(cascade=CascadeType.REFRESH, fetch=FetchType.LAZY)
+	@JoinColumn
+	private User user;
 	
 	@PrePersist
 	private void init() {
@@ -98,18 +101,10 @@ public class Product {
 	}
 
 
-	public String getAuthor() {
-		return author;
-	}
-
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
 	
 	@Override
 	public String toString() {
-		return productId+" "+title+" "+description+" "+price+" "+city+" "+author;
+		return productId+" "+title+" "+description+" "+price+" "+city+" ";
 	}
 
 	public List<Image> getImages() {
@@ -121,6 +116,16 @@ public class Product {
 	}
 	
 
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 	public Long getPreviewImageId() {

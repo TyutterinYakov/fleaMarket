@@ -1,6 +1,7 @@
 package market.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -35,13 +36,14 @@ public class MarketController {
 
 
 	@GetMapping("/")
-	public String market(@RequestParam(name="title", required = false) String title, Model model) {
+	public String market(@RequestParam(name="title", required = false) String title, Model model, Principal pr) {
 		model.addAttribute("products", productService.listProducts(title));
+		model.addAttribute("user", productService.getUserByPrincipal(pr));
 		return "market";
 	}
 	@PostMapping("/product/create")
-	public String createProduct(@RequestParam(name="file", required = false) List<MultipartFile> files, Product product) throws IOException {
-		productService.saveProduct(product, files);
+	public String createProduct(@RequestParam(name="file", required = false) List<MultipartFile> files, Product product, Principal pr) throws IOException {
+		productService.saveProduct(pr, product, files);
 		
 		return "redirect:/";
 	}

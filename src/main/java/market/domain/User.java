@@ -3,6 +3,7 @@ package market.domain;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -50,12 +52,18 @@ public class User implements UserDetails{
 	@JoinColumns(@JoinColumn(name="user_id"))
 	@Enumerated(EnumType.STRING)
 	private Set<Role> roles = new HashSet<>();
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="user")
+	private List<Product> products;
 	@Column(name="date_of_created")
 	private LocalDateTime dateOfCreated;
 	
 	@PrePersist
 	private void init() {
 		dateOfCreated = LocalDateTime.now();
+	}
+	
+	public boolean isAdmin() {
+		return roles.contains(Role.ROLE_ADMIN);
 	}
 
 	public Long getUserId() {
@@ -133,6 +141,14 @@ public class User implements UserDetails{
 	//SECURITY
 	
 	
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setPoducts(List<Product> poducts) {
+		this.products = products;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
