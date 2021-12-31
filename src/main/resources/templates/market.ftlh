@@ -4,7 +4,11 @@
 	<title>market hey</title>
 </head>
 <body>
-<h1>Market</h1><hr>
+<h1>Market | <a href="/login">Войти</a></h1><hr>
+<form action="/logout" method="post">
+	<input type="hidden" name="_csrf" value="${_csrf.token}">
+	<input type="submit" value="Выход">
+</form>
 <h4>Товары со всей России</h4>
 <form action="/" method="get">
 	Поиск по названию объявления: <input type="text" name="title"><br>
@@ -26,7 +30,7 @@
 	Цена: <input type="number", name="price"/><br><br>
 	Город: <input type="text", name="city"/><br><br>
 	Автор: <input type="text", name="author"/><br><br>
-	Фото 1: <input type="file", name="file" required multiple/><br><br>
+	Фото 1: <input type="file", name="file" multiple/><br><br>
 
 	<input type="submit" value="Добавить товар"/>
 </form>

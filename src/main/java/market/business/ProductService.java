@@ -55,7 +55,7 @@ public class ProductService {
 		Product prFromDb = productDao.saveAndFlush(pr);
 		String imgName;
 		Long id = pr.getProductId();
-		if(files.size()!=0) {
+		if(files.get(0).getOriginalFilename()!="") {
 			for(MultipartFile file: files) {
 				imgName = file.getOriginalFilename();
 				Path fileNameAndPath = Paths.get(uploadDir, imgName);
@@ -65,6 +65,11 @@ public class ProductService {
 				img.setProduct(prFromDb);
 				imageDao.save(img);
 			}
+		} else {
+			Image img = new Image();
+			img.setOriginalName("noimage.png");
+			img.setProduct(prFromDb);
+			imageDao.save(img);
 		}
 	}
 		

@@ -9,7 +9,7 @@
 
 <div>
 <#list images as img>
-            <img height="150px" width="150px" src="../productImages/${img.originalName}"/>
+            <img height="100px" src="../productImages/${img.originalName}"/>
 </#list>
 </div>
 <b>Название товара: </b>${product.title}<br><br>
